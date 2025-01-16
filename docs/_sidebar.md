@@ -1,2 +1,2 @@
-- [Documentation](/)
-- [Introduction](introduction.md)
+- [Warp CLI](/)
+- [Getting Started](getting-started.md)
