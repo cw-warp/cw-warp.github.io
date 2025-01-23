@@ -87,3 +87,60 @@ it('checks if the chain is up and running', async () => {
     expect(chainId).to.be.eq("testing");
 });
 ```
+
+# Project deployment
+
+Once the contract is ready, you can start the deployment process. Deployment is controlled by the autodeploy script from the `Warp.toml` config file.
+
+## Deployment configuration
+
+Before deploying to a network it is good practice to set up the configuration properly.
+
+Let's assume that in our scenario we want to deploy to the local Juno testnet (with chain ID `testing`). For that we need to adjust the `[network]` section of the `Warp.toml` config file. To make this process easier, there's a command that automatically populates the config with the correct values for a local testnet:
+
+```sh
+warp config set --network local
+```
+
+> **Tip:** Other possible values for `--network` are: `testnet` and `mainnet`. This works for all supported chains.
+
+Executing the above command will set the following values:
+
+```toml
+[network]
+[network]
+profile = "juno"
+chain_id = "testing"
+rpc_url = "http://localhost:26657"
+denom = "ujunox"
+gas_prices = "0.000001ujunox"
+```
+
+## Auto-deploy configuration
+
+The next step is configuring the deployment process itself
+
+```toml;
+[autodeploy]
+account_id = "dev" # <- this is the account that you have registered in the junod keyring (junod keys list)
+make_labels_unique = true # <- Some chains require that each contract deployed has a unique label. It can be disregarded for Juno
+
+[[autodeploy.steps]] # Each contract to deploy is represented with a `steps` entry
+id = "$_contr" # <- this defines how the contract is being referred to internally by oither contracts that come after it
+contract = "artifacts/contr.wasm" # <- path to the wasm artifact
+label = "contr" # <- on-chain contract label
+store_only = false # <- whether this contract should be automatically instantiated, or just stored (useful for factories)
+migrate_msg = "{}" # <- migration msg to pass to the wasm call
+init_msg = '{ "owner": "$account_id", "message": "" }' # <- instantiate message to pass to the wasm call
+funds = '10000ujunox' <- # optional
+```
+
+After the script is configured, it's just a matter of one short command to execute it against the target network:
+
+```sh
+warp deploy
+```
+
+And that's it for the basic usage of the Warp Command Line Interfacee! This workflow can be adjusted based on the needs of individual projects, but overall it should cover most requirements throughout the development cycle. More advanced guides can be found in the later sections of this documentation.
+
+Happy developing!
