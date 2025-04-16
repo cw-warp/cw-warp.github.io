@@ -1,2 +1,3 @@
 - [Warp CLI](/)
 - [Getting Started](getting-started.md)
+- [Warp IDE Setup](ide.md)
