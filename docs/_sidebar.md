@@ -2,5 +2,6 @@
 - [Getting Started](getting-started.md)
 - [Warp IDE Setup](ide.md)
 - [Advanced Topics](advanced-topics.md)
-  - [Plugin-Based Architecture](plugin-architecture.md)
   - [Contract Documentation](contract-documentation.md)
+  - [Plugin-Based Architecture](plugin-architecture.md)
+  - [Custom Pipelines](custom-pipelines.md)
